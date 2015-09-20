@@ -1,0 +1,41 @@
+<div class="container">
+
+<div class="col-lg-6 col-lg-offset-6 pulltop loginform">
+        <form class="insideloginform">
+            <div class="navbar-brand brandlogin">
+            </div>
+            <div>
+                  <ul class="nav navbar-nav navbar-right langPicker">
+                    <li><a ng-click="translate('rs')" class="hover"><img src="img/flag_serbian.gif"></img></a></li>
+                    <li><a ng-click="translate('en')" class="hover"><img src="img/uk.png"></img></a></li>
+                  </ul>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control input-lg" id="inputEmail" placeholder="{{ 'LOGIN_USERNAME' | translate}}" ng-model="username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control input-lg" id="inputPassword" placeholder="{{ 'LOGIN_PASSWORD' | translate}}" ng-model="password">
+            </div>
+            <div>
+                <a href="#/registration"> {{ 'REGISTER' | translate}}</a>
+                <a class="btn btn-primary submitbutton btn-lg pull-right" role="button" ng-click="login()">
+
+                    {{ 'LOGIN' | translate}}</a>
+              
+                  <!--<oauth
+                        site="http://oauth-ng-server.herokuapp.com."
+                        client-id="017b9f702a904869a6e52bd39b147bb912"
+                        redirect-uri="http://localhost/pais/#/newOrder"
+                        profile-uri="http://oauth-ng-server.herokuapp.com/api/v1/me"
+                        scope="public">
+                </oauth>  -->
+            </div>
+
+        </form>
+
+        <div class="alert alert-danger" ng-show="loginFailed">
+            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{ 'LOGIN' | translate }}</strong> {{ 'ERROR_LOGIN' | translate }}
+    </div>
+<div>
+</div>

@@ -1,0 +1,51 @@
+<div class="container">
+    <nav class="navbar navbar-default" ng-include="'partials/navigationBar.html'">
+    </nav>
+
+    <div class="alert alert-danger" ng-show="generalError">
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{ 'ERROR_GEN' | translate }}</strong> {{ 'ERROR_GEN_DET' | translate }}
+    </div>
+
+
+    <div class="col-lg-4" ng-show="!generalError" cg-busy="{promise:getOrders,message:'Loading...',backdrop:true}">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ 'ORDERS' | translate }}</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <a class="list-group-item hoverblue" ng-repeat="account in accounts"
+                       ng-click="select(account.order_id)" id="{{account.order_id}}"
+                       ng-class="{'active' : isActive(account.order_id)}">{{account.name}}</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-8" ng-show="!generalError">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{selectedAccount.name}} | {{'IMAGES' | translate}}</h3>
+            </div>
+            <div class="panel-body">
+                <h4>Upload on file select</h4>
+                    <button class="btn btn-primary" ngf-select="uploadFiles($files)" multiple accept="image/*">Select Files</button>
+                <br><br>
+                Files:
+                  <ul>
+                    <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}
+                      <span class="progress" ng-show="f.progress >= 0">
+                        <div style="width:{{f.progress}}%"  
+                            ng-bind="f.progress + '%'"></div>
+                      </span>
+                    </li>     
+                  </ul>
+                {{errorMsg}}
+            </div>
+        </div>
+    </div>
+
+</div>

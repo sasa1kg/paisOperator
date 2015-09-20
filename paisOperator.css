@@ -1,0 +1,201 @@
+body{
+    background: url(img/dacom_photo.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;  
+}
+
+.pulltop {
+	margin-top: 10%;
+}
+
+.fullwidth {
+	width: 100%;
+}
+
+.holder {
+	height:85%;
+	padding: 10px;
+}
+
+.sensorholder {
+	background-color: rgba(231, 231, 231, 0.9);
+	padding: 10px;
+}
+
+.backopacity {
+	background-color: rgba(231, 231, 231, 0.9);
+}
+
+.again {
+	width: 60px;
+	height: 60px;
+}
+
+.loginform {
+	opacity: 0.9;
+	filter:alpha(opacity=90);
+	background-color: white !important;
+	border-radius: 10px;
+}
+
+.loginform form {
+	opacity: 1;
+}
+
+.submitbutton {
+}
+
+.insideloginform {
+	padding-bottom: 30px;
+	padding-top: 10px;
+}
+
+.langPicker {
+	padding-bottom: 10px;
+}
+
+#map-canvas {
+	width:100%;
+    height: 80%;
+}
+
+#map-canvas-results {
+	width:100%;
+    height: 80%;
+ }
+
+ #map-canvas-kml {
+	width:100%;
+	height: 100%;
+ }
+
+.angular-google-map-container { 
+	height: 80%; 	
+}
+
+.hoverblue:HOVER {
+	background-color: #888888 !important;
+	cursor: pointer;
+}
+li.active {
+	background:blue; 
+	color:white;
+}
+.map {
+	margin-top: 10px;
+}
+.dateFromDatePicker {
+	
+}
+.dateToDatePicker {
+	
+}
+.freqPicker {
+	
+}
+.labelwidth {
+	width: 200px;
+}
+[ac-chart] {
+	float:left;
+	width: 100%;
+	height: 70%;
+	margin: 0 1%;
+}
+
+.ac-tooltip {
+    color: black;
+    border: 2px solid rgba(200,200,0,0.8);
+    background-color: rgba(200,200,0,0.5);
+ }
+ #chart1 .ac-legend-box {
+    border-radius: 10px;
+    border: 1px black;
+ }
+.select2 > .select2-choice.ui-select-match {
+    /* Because of the inclusion of Bootstrap */
+    height: 29px;
+}
+
+ .selectize-control > .selectize-dropdown { 
+   top: 36px;
+ }
+.imgHolder {
+	max-height: 80%;
+}
+.pulltopbutton {
+	margin-top: 30px;
+}
+.pulltoppanel {
+	margin-top: 10px;
+}
+.separateFive {
+	margin-top: 5px;
+}
+.cursorchg {
+	cursor: pointer;
+}
+
+.navbar-brand{
+	background: url("img/PAIS_logo_S.png");
+	height: 78px;
+	width: 100px;
+	margin-left: 15px !important;
+}
+
+.navbar-fixed-top{
+	height: 78px;
+}
+.navbar-nav{
+	padding-top: 14px;
+	margin-left: 5px;
+}
+
+.hover {
+	cursor: pointer;
+}
+.brandlogin {
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-left: 40% !important;
+}
+.bold {
+	font-weight: bold;
+}
+.activeBadge {
+	background-color: green;
+}
+.inactiveBadge {
+	background-color: red;
+}
+.panelBig {
+	background-color: #CCFF99 !important;
+}
+.panelBorder {
+	border: 3px solid #CCFF99 !important;
+}
+.panelSmall {
+	background-color: black !important;
+	color: white !important;
+}
+.panelSmallBorder {
+	border: 2px solid black !important;
+}
+
+form .progress {
+    line-height: 15px;
+}
+
+.progress {
+    display: inline-block;
+    width: 100px;
+    border: 3px groove #CCC;
+}
+
+.progress div {
+    font-size: smaller;
+    background: green;
+    width: 0;
+}
