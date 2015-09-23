@@ -1,8 +1,9 @@
 <div class="container">
 
-<div class="col-lg-6 col-lg-offset-6 pulltop loginform">
+<div class="col-lg-6 col-lg-offset-3 pulltop loginform">
         <form class="insideloginform">
-            <div class="navbar-brand brandlogin">
+            <div>
+                <h4 class="operaterName">O P E R A T E R</h4>
             </div>
             <div>
                   <ul class="nav navbar-nav navbar-right langPicker">
@@ -17,7 +18,6 @@
                 <input type="password" class="form-control input-lg" id="inputPassword" placeholder="{{ 'LOGIN_PASSWORD' | translate}}" ng-model="password">
             </div>
             <div>
-                <a href="#/registration"> {{ 'REGISTER' | translate}}</a>
                 <a class="btn btn-primary submitbutton btn-lg pull-right" role="button" ng-click="login()">
 
                     {{ 'LOGIN' | translate}}</a>
