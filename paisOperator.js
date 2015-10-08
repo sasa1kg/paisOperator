@@ -1,6 +1,6 @@
 var paisOperator = angular.module("paisOperator", ['ngRoute', 'ngCookies', 
 	'angularjs-dropdown-multiselect', 'angularCharts', 
-	'ngMagnify', 'nvd3', 'ngSanitize','pascalprecht.translate', 'ServerService', 'cgBusy', 'ngFileUpload']);
+	'ngMagnify', 'nvd3', 'ngSanitize','pascalprecht.translate', 'ServerService', 'cgBusy', 'ngFileUpload', 'LocalStorageModule']);
 
 
 paisOperator.config(function($sceDelegateProvider) {

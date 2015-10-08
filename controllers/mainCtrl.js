@@ -5,77 +5,49 @@ angular.module('paisOperator').controller("mainCtrl", ["$scope", "$http", "$filt
 
     scope.clientId = 22;
 
-    scope.selected = {
-        "type" : -1,
-        "id" : -1
-    };
+    scope.loaded = true;
 
-    scope.select = function (type, orderId) {
-        scope.selected.type = type;
-        scope.selected.id = orderId;
-        if (type == 1) {
-            for (var i = scope.sensors.length - 1; i >= 0; i--) {
-                if (scope.sensors[i].id == orderId) {
-                    setMarkers(scope.map, scope.sensors[i]);
+
+    scope.getClientCompaniesOrders = function () {
+
+        ServerService.getCompanyOrders().then(function (data) {
+                if (data) {
+                    scope.companyOrders = data;
+                    if (data.length > 0) {
+                        scope.selected = data[0];
+                        scope.getOrderDetails(scope.selected.client_id, scope.selected.order_id);
+                    }
+                } else {
+                  
                 }
-            };
-        }
+        }, function(reason) {
+            
+        });
+
+    }
+    scope.getClientCompaniesOrders();
+
+    scope.getLoggedInUser = function () {
+
+        scope.operator = ServerService.getLoggedIn();
+
+    }
+    scope.getLoggedInUser();
+
+    scope.select = function (order_id, client_id) {
+        for (var i = scope.companyOrders.length - 1; i >= 0; i--) {
+            if (scope.companyOrders[i].order_id == order_id && scope.companyOrders[i].client_id == client_id) {
+                scope.selected = scope.companyOrders[i];
+                scope.getOrderDetails(scope.selected.client_id, scope.selected.order_id);
+            }
+        };
+           
     }
 
-    scope.accounts = [
-            {
-                "name" : "Prva",
-                "order_id" : "1",
-            },
-            {
-                "name" : "Druga",
-                "order_id" : "2",
-            },
-            {
-                "name" : "Treca",
-                "order_id" : "3",
-            }
-    ];
-
-    scope.sensors = [
-            {
-                "type" : "Temperatura vazduha",
-                "id" : "1",
-                "latitude" : 44,
-                "longitude" :  20.461414
-            },
-            {
-                "type" : "Temperatura vazduha",
-                "id" : "2",
-                "latitude" : 43.954545,
-                "longitude" :  20.161414
-            },
-            {
-                "type" : "Vlaznost vazduha",
-                "id" : "3",
-                "latitude" : 44.1678,
-                "longitude" :  20.23
-            },
-            {
-                "type" : "Temperatura vazduha",
-                "id" : "4",
-                "latitude" : 43.9887,
-                "longitude" :  20.02975
-            },
-            {
-                "type" : "Vlaznost vazduha",
-                "id" : "5",
-                "latitude" : 43.78435,
-                "longitude" :  19.65342
-            }
-    ];
-
-
     
-
-    scope.isActive = function (type, order) {
+    scope.isActive = function (order_id, client_id) {
         if (scope.selected != null) {
-            if (type == scope.selected.type && scope.selected.id == order) {
+            if (scope.selected.order_id == order_id && scope.selected.client_id == client_id) {
                 return true;
             }
         } else {
@@ -109,7 +81,67 @@ angular.module('paisOperator').controller("mainCtrl", ["$scope", "$http", "$filt
         });
     }
 
-    var myLatlng = new google.maps.LatLng(44, 20.461414);
+    scope.getSensorTypeName = function (type_id) {
+        for (var i = scope.sensorTypes.length - 1; i >= 0; i--) {
+            if (scope.sensorTypes[i].id == type_id) {
+                return scope.sensorTypes[i].name;
+            }
+        };
+    }
+
+    scope.getUOMName = function (uom_id) {
+        for (var i = scope.uoms.length - 1; i >= 0; i--) {
+            if (scope.uoms[i].id == uom_id) {
+                return scope.uoms[i].name;
+            }
+        };
+    }
+
+    scope.getOrderDetails = function (client_id, order_id) {
+        scope.loaded = false;
+        ServerService.clientOrderDetailed(client_id, order_id).then(function (data) {
+                        if (data) {
+                           scope.selectedDetailed = data;
+                           ServerService.getClient(client_id).then(function (data) {
+                                    if (data) {
+                                        scope.selectedDetailedUser = data;
+                                        scope.loaded = true;
+                                    } else {
+                                            alert("getClient Error occured.");
+                                    }
+                                }, function(reason) {
+                                    alert("getClient Error occured. ");
+                                });
+                        } else {
+                            alert("clientOrderDetailed Error occured.");
+                        }
+        }, function(reason) {
+            alert("clientOrderDetailed Error occured.");
+        });
+    } 
+
+
+    scope.getSensorTypesDetailed = ServerService.getSensorTypes().then(function (data) {
+                        if (data) {
+                           scope.sensorTypes = data;
+                        } else {
+                            alert("Error occured.");
+                        }
+    }, function(reason) {
+        alert("Error occured.");
+    });
+
+    scope.getUOMS = ServerService.getUOMs().then(function (data) {
+                        if (data) {
+                           scope.uoms = data;
+                        } else {
+                           alert("Error occured.");
+                        }
+    }, function(reason) {
+        alert("Error occured.");
+    });
+
+    /*var myLatlng = new google.maps.LatLng(44, 20.461414);
 
     $(document).ready(function () {
 
@@ -159,7 +191,7 @@ angular.module('paisOperator').controller("mainCtrl", ["$scope", "$http", "$filt
         }
     
 
-    scope.sensorsOnMap;
+    scope.sensorsOnMap;*/
 
 
 }]);

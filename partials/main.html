@@ -12,56 +12,111 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">{{ 'IMAGES' | translate }}</h3>
+                <h3 class="panel-title">Orders assigned to {{operator.company_name}}</h3>
             </div>
             <div class="panel-body">
                 <ul class="list-group">
-                    <a class="list-group-item hoverblue" ng-repeat="account in accounts"
-                       ng-click="select(0, account.order_id)" id="{{account.order_id}}"
-                       ng-class="{'active' : isActive(0, account.order_id)}">{{account.name}}</a>
-                </ul>
-            </div>
-        </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ 'SENSORS' | translate }}</h3>
-            </div>
-            <div class="panel-body">
-                <ul class="list-group">
-                    <a class="list-group-item hoverblue" ng-repeat="sensor in sensors"
-                       ng-click="select(1, sensor.id)" id="{{sensor.id}}"
-                       ng-class="{'active' : isActive(1, sensor.id)}">{{sensor.type}}</a>
+                    <a class="list-group-item hoverblue" ng-repeat="order in companyOrders"
+                       ng-click="select(order.order_id, order.client_id)" id="{{order.order_id}}"
+                       ng-class="{'active' : isActive(order.order_id, order.client_id)}">{{order.name}}</a>
                 </ul>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-8">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Client</h3>
-            </div>
-            <div class="panel-body">
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Phone</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Marko Markovic</td>
-                            <td>M. Gorkog 1/24, Novi Sad</td>
-                            <td>+381643534343</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>       
-        </div>
+        <div class="col-lg-8">
+                            <div class="panel panel-default panelSmallBorderTop">
+                                    <div class="panel-heading panelSmallTop">
+                                        <h4>{{selectedDetailed.name}}<h4>
+                                    </div>
+                                    <div class="panel-body" ng-show="!loaded">
+                                        <p>Loading order details...</p>
+                                       
+                                    </div>
+                                    <div class="panel-body" ng-show="loaded">
+                                        <div class="panel panel-default panelSmallBorderTop" ng-show="selectedDetailed.description.length > 0">
+                                            <div class="panel-heading panelSmallTop">
+                                                <p>Description/Additional remarks<p>
+                                            </div>
+                                            <div class="panel-body">
+                                                {{selectedDetailed.description}}
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default panelSmallBorderTop">
+                                            <div class="panel-heading panelSmallTop">
+                                                <p>Service time<p>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p>From: {{selectedDetailed.start_date}}<p>
+                                                <p>To: {{selectedDetailed.end_date}}<p>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5>Ordered By: {{selectedDetailedUser.first_name}} {{selectedDetailedUser.last_name}}<h5>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p>Username: {{selectedDetailedUser.username}}</p>
+                                                <p>Email: {{selectedDetailedUser.email}}</p>
+                                                <p>Country: {{selectedDetailedUser.country_code}}</p>
+                                                <p>Phone: {{selectedDetailedUser.phone}}</p>
+                                            </div>
+                                        </div>
+                                        <h4 ng-if="selectedDetailed.polygons.length>0">Images</h4>
+                                        <div class="panel panel-default panelSmallBorder" ng-repeat="ter in selectedDetailed.polygons">
+                                            <div class="panel-heading panelSmall">
+                                                <h5>Territory {{ter.polygon_id}}<h5>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p>Description/Additional remark: {{ter.description}}</p>
+                                                <p>Surface: {{ter.surface}}</p>
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Latitude</th>
+                                                            <th>Longitude</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="coord in ter.coordinates">
+                                                            <td>{{coord.latitude}}</td>
+                                                            <td>{{coord.longitude}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <h4 ng-if="selectedDetailed.sensors.length>0">Sensors</h4>
+                                        <div class="panel panel-default panelSmallBorderSen" ng-repeat="sen in selectedDetailed.sensors">
+                                            <div class="panel-heading panelSmallSen">
+                                                <h5>Sensor {{sen.sensor_id}}<h5>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p>Description/Additional remarks: {{sen.description}}</p>
+                                                <p>Type: {{getSensorTypeName(sen.type_id)}}</p>
+                                                <p>UOM: {{getUOMName(sen.uom_id)}}</p>
+                                                <span class="badge activeBadge" ng-show="sen.active==1">Active</span><span class="badge notActiveBadge" ng-show="sen.active==0">Not active</span>
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Latitude</th>
+                                                            <th>Longitude</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{sen.latitude}}</td>
+                                                            <td>{{sen.longitude}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                         
+                                    </div>
+                            </div>
     </div>
-
+<!--
     <div class="col-lg-8" ng-show="selected.type == 0">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -85,14 +140,6 @@
                             ng-bind="f.progress + '%'"></div></td>
                     </tr>
                     </tbody>
-                  <!--<ul>
-                    <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}
-                      <span class="progress" ng-show="f.progress >= 0">
-                        <div style="width:{{f.progress}}%"  
-                            ng-bind="f.progress + '%'"></div>
-                      </span>
-                    </li>     
-                  </ul>-->
                 {{errorMsg}}
                 </table>
             </div>
@@ -115,6 +162,6 @@
               
             </div>
         </div>
-    </div>
+    </div>-->
 
 </div>

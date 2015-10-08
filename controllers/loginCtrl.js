@@ -10,7 +10,10 @@ angular.module('paisOperator').controller("loginCtrl", ["$scope", "$location", "
 
 	scope.login = function () {
 		scope.loginFailed = false;
-		ServerService.login(scope.username, scope.password).then(function (data) {
+		ServerService.login({
+			"username" : scope.username,
+			"password" : scope.password
+		}).then(function (data) {
                 if (data) {
                 	location.path("/main");
                 } else {
@@ -20,5 +23,17 @@ angular.module('paisOperator').controller("loginCtrl", ["$scope", "$location", "
     		scope.loginFailed = true;
 		});
 	}
+
+	scope.init = function () {
+		var userLS = ServerService.getUserInStorage();
+		if (userLS != null) {
+					scope.username = userLS.username;
+                	scope.password = userLS.password;
+		} else {
+					scope.username = "";
+					scope.password = "";
+		}
+	}	
+	scope.init();
 
 }]);

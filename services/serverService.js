@@ -1,26 +1,61 @@
 var ServerService = angular.module('ServerService', [])
-	.service('ServerService', ["$q", "$http", "$location", function (q, http, location) {
+	.service('ServerService', ["$q", "$http", "$location", 'localStorageService', 
+    function (q, http, location, localStorageService) {
 
 	var serverurl = 'http://195.220.224.164/';
-
   var user = "";
 
 
+      /*-------------------------- LOCAL STORAGE ----------------------------*/
+
+  var putUserInStorage = function (user) {
+    localStorageService.set("operatorObject", user);
+  }
+
+  this.clearUserInStorage = function () {
+        var keys = localStorageService.keys();
+        for (var i = keys.length - 1; i >= 0; i--) {
+              localStorageService.remove(keys[i]);
+        };
+  }
+
+  var getUserInStorage = function () {
+    var keys = localStorageService.keys();
+    if (keys.length == 0) {
+      return null;
+    }
+    for (var i = keys.length - 1; i >= 0; i--) {
+      if (keys[i] == "operatorObject") {
+        var userObj = localStorageService.get(keys[i]);
+        return userObj;
+      }
+    };
+    return null;
+  }
+
+  this.getUserInStorage = function () {
+    var keys = localStorageService.keys();
+    if (keys.length == 0) {
+      return null;
+    }
+    for (var i = keys.length - 1; i >= 0; i--) {
+      if (keys[i] == "userObject") {
+        var userObj = localStorageService.get(keys[i]);
+        return userObj;
+      }
+    };
+    return null;
+  }
+
     /*-------------------------- USER OPERATIONS----------------------------*/
 
-  this.login = function (username, password) {
+  this.login = function (object) {
       var deffered = q.defer();
-      http.get(serverurl + "pais/clients/" + username).
+      http.post(serverurl + "pais/operators/login", object).
               success(function(data, status) {
-                //var result = JSON.stringify(data);
-                //var dataJSON = JSON.parse(result);
                 if (status == 200) {
-                    if (data.id == username && data.password == password) {
-                      user = username;
+                      putUserInStorage(data);
                       deffered.resolve(true);
-                    } else {
-                      deffered.reject("Error");
-                    }
                 } else {
                    console.log("Status not OK " + status);
                    deffered.reject("Error");
@@ -64,9 +99,6 @@ var ServerService = angular.module('ServerService', [])
 
 
 	this.getClient = function (id) {
-      if (user == "" || user == undefined) {
-        location.path("/login");
-      }
 		 var deffered = q.defer();
     	 console.log("getClient " + id);
     	 http.get(serverurl + "pais/clients/" + id).
@@ -89,6 +121,88 @@ var ServerService = angular.module('ServerService', [])
               });
     	 return deffered.promise;
 	}
+
+  this.getUOMs = function () {
+    var userLS = getUserInStorage();
+    if (userLS == null) {
+      location.path("/login");
+    }
+      var deffered = q.defer();
+      http.get(serverurl + "pais/uoms").
+              success(function(data, status) {
+                if (status == 200) {
+                    deffered.resolve(data);
+                } else {
+                   console.log("Status not OK " + status);
+                   deffered.reject("Error");
+                }
+                
+              }).
+              error(function(data, status) {
+                   console.log("Error " + status);
+                   deffered.reject("Error");
+              });
+       return deffered.promise;
+  }
+
+  this.getSensorTypes = function () {
+    var userLS = getUserInStorage();
+    if (userLS == null) {
+      location.path("/login");
+    }    
+      var deffered = q.defer();
+      http.get(serverurl + "pais/sensorTypesDetailed").
+              success(function(data, status) {
+                if (status == 200) {
+                    deffered.resolve(data);
+                } else {
+                   console.log("Status not OK " + status);
+                   deffered.reject("Error");
+                }
+                
+              }).
+              error(function(data, status) {
+                   console.log("Error " + status);
+                   deffered.reject("Error");
+              });
+       return deffered.promise;
+  } 
+
+  this.getCompanyOrders = function () {
+      var userLS = getUserInStorage();
+      if (userLS == null) {
+        location.path("/login");
+      }
+     var deffered = q.defer();
+       http.get(serverurl + "pais/operators/companies/" + userLS.company_id + "/orders").
+              success(function(data, status) {
+                //var result = JSON.stringify(data);
+                //var dataJSON = JSON.parse(result);
+                if (status == 200) {
+                    console.log("Status OK " + status) ;
+                    console.log(JSON.stringify(data));
+                    deffered.resolve(data);
+                } else {
+                   console.log("Status not OK " + status);
+                   deffered.reject("Error");
+                }
+                
+              }).
+              error(function(data, status) {
+                   console.log("Error " + status);
+                   deffered.reject("Error");
+              });
+       return deffered.promise;
+  }
+
+    this.getLoggedIn = function () {
+      var userLS = getUserInStorage();
+      if (userLS == null) {
+        location.path("/login");
+      }
+     return userLS;
+  }
+
 
 
 
@@ -288,11 +402,8 @@ var ServerService = angular.module('ServerService', [])
  
 
   this.clientOrderDetailed = function (clientId, orderId) {
-      if (user == "" || user == undefined) {
-        location.path("/login");
-      }
       var deffered = q.defer();
-      http.get(serverurl + "pais/clients/" + user + "/orders/" + orderId + "/details").
+      http.get(serverurl + "pais/clients/" + clientId + "/orders/" + orderId + "/details").
               success(function(data, status) {
                 if (status == 200) {
                     deffered.resolve(data);
