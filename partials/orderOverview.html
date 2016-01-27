@@ -1,0 +1,69 @@
+ <div class="container">
+
+    <nav class="navbar navbar-default" ng-include="'partials/navigationBar.html'">
+    </nav>
+
+
+            <div class="container-fluid">
+
+                <div class="row">
+                	<a class="btn btn-primary pull-right pullbottom" href="#/uploadResults/{{order_id}}/{{client_id}}/"><span class="glyphicon glyphicon-chevron-left"></span> {{'BACK' | translate }}</a>
+                    <div class="col-lg-12">
+                    	<div class="panel panel-default">
+                    		<div class="panel-body panelMap">
+                       			<div class="google-map-canvas" id="map-canvas-full"></div>
+                       		</div>
+                    	</div>
+                    </div>
+                    <div class="col-lg-12">
+                    	<h4 ng-show="order.polygons.length > 0">{{ 'IMAGES' | translate }}</h4>
+                    	<table ng-show="order.polygons.length > 0" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'DESCRIPTION' | translate }}</th>
+                                    <th>{{ 'TER_SUR' | translate }} [ha]</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <tr ng-repeat="poly in order.polygons">
+                                        <td>{{poly.description}}</td>
+                                        <td>{{roundDouble(poly.surface)}}</td>
+                                        <td><a class="btn btn-info pull-right" ng-click="downloadDronConf(poly.polygon_id)"><span class="glyphicon glyphicon-screenshot"></span> {{ 'DOWNLOAD_DRON_CONF' | translate }}</a></td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                        <hr>
+                        <h4 ng-show="order.stations.length > 0">{{'SENSOR_STATIONS' | translate }} </h4>
+                            <div ng-show="order.stations.length > 0" ng-repeat="station in order.stations" class="panel-body">
+                                <p>{{'SENSOR_STATION' | translate}} {{station.station_id}} <a class="btn btn-primary pull-right submitbutton" ng-click="downloadSensorConf(station.station_id)"><span class="glyphicon glyphicon-screenshot"></span> {{ 'DOWNLOAD_SEN_CONF' | translate }}</a></p>
+                                
+                                <p class="pulltoppanel">{{ 'LONGITUDE' | translate}}</p>
+                                <input class="form-control" ng-model="station.longitude" ng-disabled="true"/> 
+                                <p>{{ 'LAT' | translate}}</p>
+                                <input class="form-control" ng-model="station.latitude" ng-disabled="true"/>   
+                                <table class="table table-bordered table-hover table-responsive pulltoppanel">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'TYPE' | translate }}</th>
+                                            <th>{{ 'UOM' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                        <tbody>
+                                            <tr ng-repeat="sen in station.sensors">
+                                                <td>{{getSensorTypeName(sen.type_id)}}</td>
+                                                <td>{{getUOMName(sen.uom_id)}}</td>
+                                            </tr>
+                                        </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+
+
+
+    </div>
+    <!-- /#wrapper -->

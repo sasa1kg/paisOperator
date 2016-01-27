@@ -1,0 +1,120 @@
+<div class="container">
+    <nav class="navbar navbar-default" ng-include="'partials/navigationBar.html'">
+    </nav>
+
+
+
+    <div class="col-lg-4">
+        <a class="btn btn-info pullbottom full-btn" href="#/orderOverview/{{order_id}}/{{client_id}}/"><span class="glyphicon glyphicon-globe"></span> {{ 'ALL_ON_MAP' | translate }}</a>
+    	<div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ 'SENSORS' | translate }}</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <a class="list-group-item hoverblue" ng-repeat="station in selectedDetailed.stations"
+                       ng-click="select(0, station.station_id)" id="{{station.station_id}}"
+                       ng-class="{'active' : isActive(0, station.station_id)}">Station {{station.station_id}} <span class="glyphicon glyphicon-chevron-right pull-right" ng-show="selectedItem.id == station.station_id && selectedItem.type==0"></span></a>
+                </ul>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ 'IMAGES' | translate }}</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <a class="list-group-item hoverblue" ng-repeat="image in selectedDetailed.polygons"
+                       ng-click="select(1, image.polygon_id)" id="{{image.polygon_id}}"
+                       ng-class="{'active' : isActive(1, image.polygon_id)}">{{ 'TER' | translate }} {{image.polygon_id}} [{{ 'TER_SUR' | translate }} {{roundDouble(image.surface)}} ha] <span class="glyphicon glyphicon-chevron-right pull-right" ng-show="selectedItem.id == image.polygon_id && selectedItem.type==1"></span></a>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8 pullbottom">
+        <a href="#/main" class="pull-right btn btn-lg btn-primary"><span class="glyphicon glyphicon-chevron-left"></span> {{ 'BACK' | translate }}</a>
+    </div>
+
+
+    <div class="col-lg-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" ng-show="selectedItem.type == 0">{{ 'SENSOR_DATA' | translate }}</h3>
+                <h3 class="panel-title" ng-show="selectedItem.type == 1">{{ 'DRON_DATA' | translate }}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="google-map-canvas" id="map-canvas-results"></div>
+                <hr>
+                <div class="panel panel-primary" ng-show="selectedItem.type == 0">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ 'SENSOR_STATIONS' | translate }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control separateFive" ng-disabled="true" rows="2" ng-model="selectedItem.data.station_description" placeholder="{{ 'DESC_ADD' | translate }}"></textarea> 
+                        <p>{{ 'LONGITUDE' | translate }}</p>
+                        <input class="form-control" ng-model="selectedItem.data.longitude" ng-disabled="true"/> 
+                        <p>{{ 'LAT' | translate }}</p>
+                        <input class="form-control" ng-model="selectedItem.data.latitude" ng-disabled="true"/>                  
+                        <table class="table table-bordered table-hover table-responsive pulltopbutton">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'TYPE' | translate }}</th>
+                                    <th>{{ 'UOM' | translate }}</th>
+                                    <th>{{ 'DESC_ADD' | translate }}</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <tr ng-repeat="sensor in selectedItem.data.sensors">
+                                        <td>{{getSensorTypeName(sensor.type_id)}} 
+                                            <span class="badge activeBadge" ng-show="sensor.active==1">{{ 'ACT_SENS' | translate }}</span>
+                                            <span class="badge notActiveBadge" ng-show="sensor.active==0">{{ 'INACT_SENS' | translate }}</span>
+                                        </td></td>
+                                        <td>{{getUOMName(sensor.uom_id)}}</td>
+                                        <td>{{sensor.description}}</td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel panel-primary" ng-show="selectedItem.type == 1">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ 'DRON_DATA' | translate }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                                                <p>{{ 'DESC_ADD' | translate }} {{selectedItem.data.description}}</p>
+                                                <p>{{ 'TER_SUR' | translate }} {{roundDouble(selectedItem.data.surface)}} ha</p>
+                                                <p>{{ 'IMAGE_TYPES' | translate}}</p>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item form-control" ng-repeat="imageType in selectedDetailed.imageTypes">{{imageType.image_type_name}}</li>
+                                                </ul>
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>{{ 'LAT' | translate }}</th>
+                                                            <th>{{ 'LONGITUDE' | translate }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="coord in selectedItem.data.coordinates">
+                                                            <td>{{coord.latitude}}</td>
+                                                            <td>{{coord.longitude}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            
+                      
+                    </div>
+                </div>
+                <hr>
+                <a class="btn btn-lg btn-primary" ng-show="selectedItem.type == 0" ng-click="downloadSensorConf(selectedItem.data.station_id)"><span class="glyphicon glyphicon-star-empty"></span> {{ 'DOWNLOAD_SEN_CONF' | translate }} </a>
+                <a class="btn btn-lg btn-primary" ng-show="selectedItem.type == 1" ng-click="downloadDronConf()"><span class="glyphicon glyphicon-star"></span> {{ 'DOWNLOAD_DRON_CONF' | translate }} </a>
+                <a href="#/dronUpload/{{order_id}}/{{client_id}}/{{selectedItem.data.polygon_id}}/" class="btn btn-lg btn-primary" ng-show="selectedItem.type == 1"><span class="glyphicon glyphicon-cloud-upload"></span> {{ 'UPLOAD_IMAGES' | translate }} </a>
+            </div>
+        </div>
+                            
+    </div>
+
+
+</div>

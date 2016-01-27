@@ -1,9 +1,9 @@
 <div class="container">
 
-<div class="col-lg-6 col-lg-offset-3 pulltop loginform">
-        <form class="insideloginform">
-            <div>
-                <h4 class="operaterName">O P E R A T O R</h4>
+<form class="col-lg-6 col-lg-offset-6 pulltop loginform" tabindex="1" ng-keyup="myFunct($event)">
+        <div class="insideloginform">
+            <div class="brandlogin">
+                <h3>OPERATOR</h3>
             </div>
             <div>
                   <ul class="nav navbar-nav navbar-right langPicker">
@@ -11,31 +11,33 @@
                     <li><a ng-click="translate('en')" class="hover"><img src="img/uk.png"></img></a></li>
                   </ul>
             </div>
-            <div class="form-group">
-                <input type="text" class="form-control input-lg" id="inputEmail" placeholder="{{ 'LOGIN_USERNAME' | translate}}" ng-model="username">
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control input-lg" id="inputPassword" placeholder="{{ 'LOGIN_PASSWORD' | translate}}" ng-model="password">
-            </div>
-            <div>
-                <a class="btn btn-primary submitbutton btn-lg pull-right" role="button" ng-click="login()">
-
-                    {{ 'LOGIN' | translate}}</a>
+    
+  
+            <div class="pulltop20 row">
+                <div class="col-lg-12">
+                    <a class="col-lg-12 btn btn btn-primary btn-lg submitbutton pull-right" role="button" href="http://www.agro-pais.com/login.php">Log in</a>
+                </div>
               
-                  <!--<oauth
-                        site="http://oauth-ng-server.herokuapp.com."
-                        client-id="017b9f702a904869a6e52bd39b147bb912"
-                        redirect-uri="http://localhost/pais/#/newOrder"
-                        profile-uri="http://oauth-ng-server.herokuapp.com/api/v1/me"
-                        scope="public">
-                </oauth>  -->
             </div>
 
-        </form>
+        </div>
 
-        <div class="alert alert-danger" ng-show="loginFailed">
-            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>{{ 'LOGIN' | translate }}</strong> {{ 'ERROR_LOGIN' | translate }}
+        <div class="alert alert-danger" ng-show="expired">
+            <strong>{{ 'LOGIN' | translate }}</strong> {{ 'ERROR_LOGIN' | translate }}
+        </div>
+</form>
+</div>
+
+
+<div class="footer">
+    <div class="container contExt">
+        <div class="col-sm-4">
+        <img src="img/euc.svg" class="logoExt"></img>
+        <img src="img/acc.svg" class="logoExt"></img>
+        <img src="img/fractals_logo.png" class="logoExt"></img>
+        </div>
+        <div class="col-sm-8">
+        <p><small class="whiteText">This project is funded by FRACTALS (Future Internet Enabled Agricultural Applications, FP7 project No. 632874), under the funding framework of the European Commission</small></p>
     </div>
-<div>
+    </div>
 </div>

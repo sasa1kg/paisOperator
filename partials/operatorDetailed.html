@@ -1,0 +1,113 @@
+<div class="container">
+    <nav class="navbar navbar-default" ng-include="'partials/navigationBar.html'">
+    </nav>
+
+    <!-- Modal -->
+    <script type="text/ng-template" id="changePasswordModal.html">
+        <div>
+
+            <!-- Modal content-->
+            <div>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="dismissModal()">&times;</button>
+                    <h4 class="modal-title">{{ 'PASSWORD' | translate }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ 'OLD_PASS' | translate }}</p>
+                    <input class="form-control" ng-disabled="true" ng-model="oldPassword">
+                    </br>
+                    <p>{{ 'NEW_PASS' | translate }}</p>
+                    <input input class="form-control" type="password" ng-model="password">
+                    </br>
+                    <p>{{ 'NEW_PASS_REP' | translate }}</p>
+                    <input input class="form-control" type="password" ng-model="passwordRepeat">
+                    </br>
+                    <div class="alert alert-danger" ng-show="errorCode == 1">
+                        <strong>{{ 'CHANGE_PASSWORD' | translate }}</strong> {{ 'REG_ERR_PASS' | translate }}
+                    </div>
+                    <div class="alert alert-danger" ng-show="errorCode == 2">
+                        <strong>{{ 'CHANGE_PASSWORD' | translate }}</strong> {{ 'REG_ERR_REP_PASS' | translate }}
+                    </div>
+                    <div class="alert alert-success" ng-show="updateDone && updateSuccess">
+                        <strong>{{ 'CHANGE_PASSWORD' | translate }}</strong> {{ 'REG_ERR_REP_PASS' | translate }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-primary" ng-click="updateAccount()"><span class="glyphicon glyphicon-save"></span> {{ 'SAVE' | translate }}</a>
+                    <a type="button" class="btn btn-danger" ng-click="dismissModal()"><span class="glyphicon glyphicon-remove"></span> {{ 'CANCEL' | translate }}</a>
+                </div>
+            </div>
+
+        </div>
+    </script>
+
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Operator <small>{{selected.first_name}} {{selected.last_name}}</small>
+                        </h1>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                    <div class="alert alert-success" ng-show="saved">
+						<strong>{{ 'SUCC' | translate }}!</strong> {{ 'CHANGES_SAVED' | translate }}
+					</div>
+                        <div class="col-lg-6">
+                            <div class="panel panel-default">
+                                    <div class="panel-body">
+
+                                        <p>{{ 'USERNAME' | translate }}</p>
+                                        <input class="form-control" ng-disabled="true" ng-model="selected.user_name">
+                                        <p>{{ 'EMAIL' | translate }}</p>
+                                        <input class="form-control" ng-model="selected.email" ng-disabled="true">
+                                        <p>{{ 'PASSWORD' | translate }}</p>
+                                        <input class="form-control" ng-model="selected.password" ng-disabled="true">
+                                        <p>{{ 'NAME' | translate }}</p>
+                                        <input class="form-control" ng-model="selected.first_name">
+                                        <p>{{ 'SURNAME' | translate }}</p>
+                                        <input class="form-control" ng-model="selected.last_name">
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                        	 <div class="panel panel-default">
+                                    <div class="panel-body">
+                        	<p>{{ 'COMPANY' | translate }}</p>
+                                        <select ng-disabled="true" class="form-control" ng-model="selected.company_id">
+                                             <option ng-selected="selected.company_id == company.id"
+                                                ng-repeat="company in companies"
+                                                value="{{company.id}}">
+                                               {{company.name}}
+                                             </option>
+                                        </select> 
+                                        <p>{{ 'PHONE' | translate }}</p> 
+                                        <input class="form-control" ng-model="selected.phone">
+                                    	</br>
+                                        <button ng-click="saveOperator()" class="btn btn-primary saveButton pulltop pull-right marginBtn"><span class="glyphicon glyphicon-floppy-save"></span> {{ 'SAVE' | translate }}</button>
+                                        <button ng-click="changePasswordModal()" class="btn btn-info saveButton pulltop pull-right marginBtn"><span class="glyphicon glyphicon-floppy-save"></span> {{ 'CHANGE_PASSWORD' | translate }}</button>
+                                        
+                                 	</div>
+                             </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+             
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->

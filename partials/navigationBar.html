@@ -13,14 +13,14 @@
 
     <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-            <!--<li class="active"><a>Nova porudžbina <span class="sr-only">(current)</span></a></li>-->
+            <!--<li class="active"><a>Nova porudžbina <span class="sr-only">(current)</span></a></li>
             <li ng-class="{'active' : activeState ==0}"><a>Active Orders</a></li>
-            <li ng-class="{'active' : activeState ==1}"><a>Finished Orders</a></li>
+            <li ng-class="{'active' : activeState ==1}"><a>Finished Orders</a></li>-->
         </ul>
         <ul class="nav navbar-nav navbar-right ">
 			<li><a ng-click="translate('rs')" class="hover"><img src="img/flag_serbian.gif"></img></a></li>
 			<li><a ng-click="translate('en')" class="hover"><img src="img/uk.png"></img></a></li>
-            <li><a>{{ 'MY_PROFILE' | translate }}</a></li>
+            <li><a href="#/myProfile">{{ 'MY_PROFILE' | translate }}</a></li>
             <li><a href="#/login"><span class="glyphicon glyphicon-log-out"></span> {{ 'EXIT' | translate }}</a></li>
         </ul>
     </div>
